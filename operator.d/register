@@ -1,0 +1,22 @@
+#!/usr/bin/env python2.7
+# -*- mode: python -*-
+import argparse
+import sys
+
+parser = argparse.ArgumentParser()
+parser.add_argument('hostname')
+parser.add_argument('sshkey')
+args = parser.parse_args()
+
+from gravel_master import Node, regenerate_authorized_keys
+
+node = Node(args.hostname)
+
+with node:
+    if node.exists:
+        sys.exit('node nicknamed %s already registered' % args.hostname)
+    else:
+        node.data.sshkey = args.sshkey
+        node.save()
+
+regenerate_authorized_keys()

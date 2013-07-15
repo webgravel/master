@@ -2,3 +2,5 @@ name: gravel-master
 requires: gravel-package gravel-common
 
 preinstall: ./setup.sh
+symlinks:
+- [command.py, /usr/local/bin/gravel]
