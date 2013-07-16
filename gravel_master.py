@@ -7,7 +7,7 @@ import pwd
 PATH = '/gravel/system/master'
 
 class Node(graveldb.Table('nodes', PATH)):
-    default = dict(sshkey=None, hostname=None)
+    default = dict(sshkey=None, address=None)
 
     def setup(self):
         if not re.match('^[a-zA-Z0-9._-]+$', self.name):
@@ -22,3 +22,6 @@ def regenerate_authorized_keys():
     path = os.path.expanduser('~gravelmaster/.ssh')
     os.chown(path, uid, 0)
     os.chown(path + '/authorized_keys', uid, 0)
+
+def get_node():
+    return Node(os.environ['NODE'])

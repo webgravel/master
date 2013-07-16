@@ -1,0 +1,4 @@
+#!/bin/bash
+if [ "$1" = "ssh_public_key" ]; then
+   cat ~/.ssh/id_rsa.pub
+fi

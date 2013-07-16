@@ -1,0 +1,21 @@
+#!/usr/bin/env python
+# -*- mode: python -*-
+# TODO: do verification
+
+import argparse
+import sys
+
+parser = argparse.ArgumentParser()
+parser.add_argument('address')
+args = parser.parse_args()
+
+from gravel_master import get_node, regenerate_authorized_keys
+import ssh_utils
+
+node = get_node()
+
+ssh_utils.call('gravelnode@' + args.address, 'ping')
+
+with node:
+    node.data.address = args.address
+    node.save()
