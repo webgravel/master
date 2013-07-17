@@ -1,0 +1,2 @@
+#!/bin/bash
+exec operator.d/node @all $@

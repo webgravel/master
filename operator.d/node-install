@@ -1,0 +1,14 @@
+#!/usr/bin/env python
+# -*- mode: python -*-
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument('nodegroup')
+parser.add_argument('--upgrade', '-u', action="store_const", const=True, default=False)
+parser.add_argument('package')
+args = parser.parse_args()
+
+import gravel_master
+
+for node in gravel_master.get_nodes(args.nodegroup):
+    node.call('pkgaction', 'upgrade' if args.upgrade else 'install', args.package)
