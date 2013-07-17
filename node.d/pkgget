@@ -1,0 +1,16 @@
+#!/usr/bin/env python
+# -*- mode: python -*-
+import sys
+import shutil
+import os
+
+sys.path.append('/gravel/pkg/gravel-package')
+import install
+
+installer = install.Installer('/gravel/pkg')
+
+pkg_name = sys.argv[1]
+
+file = installer.repo.fetch_package(pkg_name)
+shutil.copyfileobj(open(file), sys.stdout)
+os.remove(file)
