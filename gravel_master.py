@@ -1,4 +1,5 @@
 import graveldb
+import gravelrpc
 import ssh_utils
 import os
 import re
@@ -8,14 +9,18 @@ PATH = '/gravel/system/master'
 
 class Node(graveldb.Table('nodes', PATH)):
     default = dict(sshkey=None, address=None)
+    autocreate = False
 
     def validate(self):
         if not re.match('^[a-zA-Z0-9._-]+$', self.name):
             raise ValueError('bad name')
 
     def call(self, *args, **kwargs):
-        if self.data.address:
-            ssh_utils.call('gravelnode@' + self.data.address, *args, **kwargs)
+        return ssh_utils.call('gravelnode@' + self.data.address, *args, **kwargs)
+
+    def arrange_p2p(self, *args):
+        resp = self.call('arrange_p2p', *args, **dict(decode=gravelrpc.bson))
+        return (self.data.address, resp['port'], resp['key'])
 
 def regenerate_authorized_keys():
     ssh_utils.write_authorized_keys(

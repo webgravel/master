@@ -11,4 +11,4 @@ args = parser.parse_args()
 import gravel_master
 
 for node in gravel_master.get_nodes(args.nodegroup):
-    node.call('pkgaction', 'upgrade' if args.upgrade else 'install', args.package)
+    node.call('pkgaction', 'upgrade' if args.upgrade else 'install', args.package, check_output=False)

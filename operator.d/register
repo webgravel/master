@@ -10,7 +10,7 @@ args = parser.parse_args()
 
 from gravel_master import Node, regenerate_authorized_keys
 
-node = Node(args.hostname)
+node = Node(args.hostname, autocreate=True)
 
 with node:
     if node.exists:
