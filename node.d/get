@@ -1,4 +1,14 @@
-#!/bin/bash
-if [ "$1" = "ssh_public_key" ]; then
-   cat ~/.ssh/id_rsa.pub
-fi
+#!/usr/bin/env python
+# -*- mode: python -*-
+import sys
+import os
+if sys.argv[1] == "ssh_public_key":
+   sys.stdout.write(open('/root/.ssh/id_rsa.pub').read())
+else:
+   path = '/gravel/system/res'
+   name = sys.argv[1]
+
+   if name in os.listdir(path):
+      sys.stdout.write(open(path + '/' + name).read())
+   else:
+      sys.exit('resource not found')
