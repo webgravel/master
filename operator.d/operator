@@ -1,0 +1,24 @@
+#!/usr/bin/env python
+# -*- mode: python -*-
+import sys
+import os
+import cmd_util
+import argparse
+
+import gravel_master
+
+def action_add():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('name')
+    parser.add_argument('key')
+    args = parser.parse_args()
+
+    op = gravel_master.Operator(args.name)
+    op.data.sshkey = args.key
+    op.save()
+
+    gravel_master.regenerate_authorized_keys()
+
+if __name__ == '__main__':
+    cmd_util.chdir_to_code()
+    cmd_util.main_multiple_action(globals())

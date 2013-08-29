@@ -22,10 +22,14 @@ class Node(graveldb.Table('nodes', PATH)):
         resp = self.call('arrange_p2p', *args, **dict(decode=gravelrpc.bson))
         return (self.data.address, resp['port'], resp['key'])
 
+class Operator(graveldb.Table('operators', PATH)):
+    default = dict(sshkey=None)
+
 def regenerate_authorized_keys():
     ssh_utils.write_authorized_keys(
         [('gravel --node=' + node.name, node.data.sshkey)
-         for node in Node.all() if node.data.sshkey ],
+         for node in Node.all() if node.data.sshkey ] +
+        [('gravel --operator', operator.data.sshkey) for operator in Operator.all() ],
         user='gravelmaster')
     uid = pwd.getpwnam('gravelmaster').pw_uid
     path = os.path.expanduser('~gravelmaster/.ssh')
